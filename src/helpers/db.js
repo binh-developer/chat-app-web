@@ -57,6 +57,8 @@ export function queryRoomMessages() {
 export function createRoomMetadata(roomName, roomType) {
   const user = store.getters.user;
 
+  console.log(roomName, roomType);
+
   return db().ref(ROOM_METADATA_COLLECTIONS).push({
     roomName,
     roomType,

@@ -94,7 +94,6 @@ export default {
   methods: {
     async createRoomMetadata() {
       if (this.form.roomName.length <= 0) return;
-
       this.form.roomName = this.form.roomName.replace(/\s/g, "").toLowerCase();
 
       await createRoomMetadata(this.form.roomName, this.form.roomType);

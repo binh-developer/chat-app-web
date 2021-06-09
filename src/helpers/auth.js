@@ -26,7 +26,7 @@ export async function signUpWithEmailPassword(email, password, name) {
       user.updateProfile({
         displayName: name,
         photoURL:
-          "https://lh4.googleusercontent.com/-v0soe-ievYE/AAAAAAAAAAI/AAAAAAACyas/yR1_yhwBcBA/photo.jpg?sz=50",
+          "https://lh4.googleusercontent.com/-v0soe-ievYE/AAAAAAAAAAI/AAAAAAACyas/yR1_yhwBcBA/photo.jpg?sz=150",
       });
       // Signed in
       return user;
