@@ -35,7 +35,7 @@
 
     <!-- List Rooms -->
     <div
-      class="flex flex-col items-center p-2 overflow-y-auto bg-gray-50 m-2 rounded-lg"
+      class="flex flex-col items-center p-2 overflow-y-auto overflow-x-hidden bg-gray-50 m-2 rounded-lg"
     >
       <button
         v-for="(value, index) in listRoom"
