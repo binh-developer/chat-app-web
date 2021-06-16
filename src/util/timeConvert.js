@@ -2,7 +2,7 @@ import moment from "moment";
 
 export function formatDateWithTime(seconds) {
   if (seconds) {
-    return moment(seconds).format("H:mm DD-MM-YYYY");
+    return moment(seconds).format("lll");
   }
 }
 

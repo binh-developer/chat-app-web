@@ -19,8 +19,9 @@ export function readRoomMessages(roomId) {
  * Write a message
  * @returns
  */
-export function writeRoomMessages(roomId, roomData) {
+export async function writeRoomMessages(roomId, roomData) {
   const user = store.getters.user;
+  const timestamp = db.ServerValue.TIMESTAMP;
   const { uid, displayName } = user.data;
   let { messageText, imageURL } = roomData;
 
@@ -29,6 +30,17 @@ export function writeRoomMessages(roomId, roomData) {
     imageURL = removeUrlParameter(imageURL, "token");
   }
 
+  await db()
+    .ref(ROOM_METADATA_COLLECTIONS + `/${roomId}`)
+    .update({
+      lastMessage: {
+        createdAt: timestamp,
+        message: messageText.length > 0 ? messageText : "image",
+        userName: displayName,
+        userId: uid,
+      },
+    });
+
   return db()
     .ref(ROOM_MESSAGES_COLLECTIONS + `/${roomId}`)
     .push({
@@ -36,7 +48,7 @@ export function writeRoomMessages(roomId, roomData) {
       userId: uid,
       messageText,
       imageURL,
-      createdAt: db.ServerValue.TIMESTAMP,
+      createdAt: timestamp,
     });
 }
 
@@ -54,16 +66,16 @@ export function queryRoomMessages() {
  * @param {string} roomType
  * @returns
  */
-export function createRoomMetadata(roomName, roomType) {
+export function createRoomMetadata(roomName) {
   const user = store.getters.user;
-
-  console.log(roomName, roomType);
+  console.log(user);
 
   return db().ref(ROOM_METADATA_COLLECTIONS).push({
     roomName,
-    roomType,
     createdAt: db.ServerValue.TIMESTAMP,
     createdByUserId: user.data.uid,
+    lastMessage: "",
+    roomAvatar: "",
   });
 }
 

@@ -49,36 +49,57 @@
           addUserToRoom();
           updateUserReaded();
         "
-        class="flex flex-col hover:bg-gray-100 p-2 w-full bg-gray-200 m-2 rounded-lg"
+        class="flex flex-row hover:bg-gray-100 p-2 w-full bg-gray-200 m-2 rounded-lg"
       >
-        <div class="flex flex-row space-x-2 px-1">
-          <span class="my- text-xs text-gray-600"
-            ><i
-              v-if="value.roomType === 'public'"
-              class="fas fa-lock-open text-green-500"
-            ></i
-            ><i
-              v-if="value.roomType !== 'public'"
-              class="fas fa-lock text-yellow-600"
-            ></i
-          ></span>
-          <h2 class="text-sm font-semibold text-black">
-            {{ value.roomName }}
-          </h2>
-          <!-- Unread messages -->
-          <div
-            v-if="value.readed !== undefined && value.readed !== true"
-            class="mt-1 animate-bounce h-3 w-3 inline-flex items-center justify-center rounded-full bg-blue-500 text-indigo-500 flex-shrink-0"
-          ></div>
-        </div>
-        <div class="flex flex-row">
-          <span class="text-xs font-medium text-gray-600">
-            {{
-              this.$store.getters.user.data.uid == value.createdByUserId
-                ? "You created at: " + format_date(value.createdAt)
-                : ""
-            }}</span
-          >
+        <div class="flex flex-col">
+          <div class="flex flex-row space-x-2 px-1">
+            <h2
+              v-if="this.$store.getters.user.data.uid !== undefined"
+              class="text-sm font-semibold text-blue-600"
+            >
+              Room:
+              {{
+                value.roomName.charAt(0).toUpperCase() + value.roomName.slice(1)
+              }}
+            </h2>
+            <!-- Unread messages -->
+            <div
+              v-if="value.readed !== undefined && value.readed !== true"
+              class="mt-1 animate-bounce h-3 w-3 inline-flex items-center justify-center rounded-full bg-blue-500 text-indigo-500 flex-shrink-0"
+            ></div>
+          </div>
+          <div class="flex flex-row ml-1">
+            <span
+              class="text-xs font-medium text-gray-500 font-bold truncate w-auto"
+            >
+              {{
+                value.lastMessage !== "" &&
+                this.$store.getters.user.data.uid === value.lastMessage.userId
+                  ? "You: " + value.lastMessage.message
+                  : null
+              }}
+              {{
+                value.lastMessage !== "" &&
+                this.$store.getters.user.data.uid !== value.lastMessage.userId
+                  ? value.lastMessage.userName +
+                    ": " +
+                    value.lastMessage.message.substring(0, 24)
+                  : null
+              }}
+              <span v-if="value.lastMessage !== ''" class="text-red-400"
+                >...</span
+              ></span
+            >
+          </div>
+          <div class="flex flex-row ml-1">
+            <span class="text-xs font-medium text-gray-500">
+              {{
+                this.$store.getters.user.data.uid == value.createdByUserId
+                  ? "Created at: " + format_date(value.createdAt)
+                  : ""
+              }}</span
+            >
+          </div>
         </div>
       </button>
     </div>
@@ -126,6 +147,7 @@ export default {
       let uid = this.$store.getters.user.data.uid;
       await getRoomMetadata().on("value", (snapshot) => {
         this.listRoom = snapshot.val();
+        console.log(this.listRoom);
       });
 
       // Compare List Room if user readed message in this room

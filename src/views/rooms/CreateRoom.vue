@@ -33,32 +33,6 @@
             class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
-        <div class="mb-6">
-          <label class="block text-gray-700 text-sm font-bold mb-2">
-            Room type
-          </label>
-
-          <label class="inline-flex items-center">
-            <input
-              type="radio"
-              class="form-radio"
-              name="accountType"
-              value="public"
-              v-model="form.roomType"
-            />
-            <span class="ml-2">Public</span>
-          </label>
-          <label class="inline-flex items-center ml-6">
-            <input
-              type="radio"
-              class="form-radio"
-              name="accountType"
-              value="private"
-              v-model="form.roomType"
-            />
-            <span class="ml-2">Private</span>
-          </label>
-        </div>
         <div class="flex items-center justify-between">
           <button
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -87,7 +61,6 @@ export default {
     return {
       form: {
         roomName: "",
-        roomType: "public",
       },
     };
   },
@@ -96,7 +69,7 @@ export default {
       if (this.form.roomName.length <= 0) return;
       this.form.roomName = this.form.roomName.replace(/\s/g, "").toLowerCase();
 
-      await createRoomMetadata(this.form.roomName, this.form.roomType);
+      await createRoomMetadata(this.form.roomName);
       this.$router.replace({ name: "Home" });
     },
     goBack() {
