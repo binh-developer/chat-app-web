@@ -1,4 +1,34 @@
+<h1 align="center">
+<img alt="mechat_logo" title="mechat_logo" src="./docs/logo.png" width="100px" />
+    <br>
+    MeChat
+</h1>
+
+<h4 align="center">
+Contact me at <a href="mailto:binhdlt.work@gmail.com">mail</a> to about more.
+</h4>
+
+<h4 align="center">
+MeChat web app layout. 
+</h4>
+
+<br>
+<p align="center">
+ <img alt="mechat_screen1_preview" title="mechat_screen1_preview" src="./docs/gif_1.gif" width="500px"/><br>
+</p>
+<br>
+<p align="center">
+  Under login screens
+</p>
+
+<p align="center">
+ <br>
+   <img alt="mechat_screen2_preview" title="mechat_screen3_preview" src="./docs/gif_2.gif" width="500px"/>
+  <img alt="mechat_screen3_preview" title="mechat_screen3_preview" src="./docs/gif_3.gif" width="500px"/>
+</p>
+
 # chat-app
+
     This project wrote in VueJS, Firebase, Tailwind
 
 ## Create a environment variable
