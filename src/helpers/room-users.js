@@ -2,11 +2,21 @@ import store from "../store";
 import { auth, db } from "../services/firebase";
 
 const ROOM_USERS_COLLECTIONS = "room-users";
+const USER_METADATA_COLLECTIONS = "user-metadata";
 
-export function addUserToRoom() {
+export async function addUserToRoom() {
   if (store.getters.room === null) return;
   const userInfo = auth().currentUser;
   if (userInfo != null) {
+    await db()
+      .ref(
+        USER_METADATA_COLLECTIONS +
+          `/${auth()?.currentUser?.uid}/rooms/${store.getters.room.roomID}`
+      )
+      .set({
+        join: true,
+      });
+
     return db()
       .ref(
         ROOM_USERS_COLLECTIONS +

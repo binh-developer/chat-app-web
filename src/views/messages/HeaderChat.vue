@@ -20,12 +20,17 @@
         v-if="this.room === null"
         class="flex flex-row overflow-hidden text-base font-medium leading-tight text-gray-600 whitespace-no-wrap"
       >
-        <img :src="this.user.data.photoURL" alt="Avatar" class="w-8 h-8" />
-        <p class="w-8 h-8 p-1">
+        <img
+          :src="this.user.data.photoURL"
+          alt="Avatar"
+          class="w-8 h-8 rounded-full"
+        />
+        <p class="w-8 h-8 p-2">
           {{ this.user.data.displayName }}
         </p>
       </div>
     </div>
+
     <button
       type="button"
       v-on:click="deleteRoom"
@@ -36,6 +41,18 @@
         <p class="text-xs font-medium">Delete Room</p>
       </div>
     </button>
+
+    <button
+      type="button"
+      v-on:click="leaveRoom"
+      v-if="this.room !== null"
+      class="flex flex-col self-center ml-2 text-yellow-500 focus:outline-none hover:text-blue-200"
+    >
+      <div class="flex flex-row">
+        <p class="text-xs font-medium">Leave Room</p>
+      </div>
+    </button>
+
     <button
       type="button"
       v-on:click="logout"
@@ -51,7 +68,7 @@
 <script>
 import { mapGetters } from "vuex";
 
-import { deleteRoom } from "../../helpers/db";
+import { deleteRoom, leaveRoom } from "../../helpers/db";
 import { signOut } from "../../helpers/auth";
 import store from "../../store";
 
@@ -71,7 +88,13 @@ export default {
     },
     async deleteRoom() {
       if (this.room.roomID !== null) {
-        await deleteRoom(this.room.roomID);
+        await deleteRoom(this.room.roomID, this.user.data.uid);
+        this.clearRoom();
+      }
+    },
+    async leaveRoom() {
+      if (this.room.roomID !== null) {
+        await leaveRoom(this.room.roomID, this.user.data.uid);
         this.clearRoom();
       }
     },

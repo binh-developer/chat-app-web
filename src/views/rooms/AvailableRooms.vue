@@ -70,32 +70,33 @@
           </div>
           <div class="flex flex-row ml-1">
             <span
+              v-if="
+                value.lastMessage !== '' &&
+                value.lastMessage !== undefined &&
+                value.lastMessage !== null
+              "
               class="text-xs font-medium text-gray-500 font-bold truncate w-auto"
             >
               {{
-                value.lastMessage !== "" &&
                 this.$store.getters.user.data.uid === value.lastMessage.userId
                   ? "You: " + value.lastMessage.message
                   : null
               }}
               {{
-                value.lastMessage !== "" &&
                 this.$store.getters.user.data.uid !== value.lastMessage.userId
                   ? value.lastMessage.userName +
                     ": " +
                     value.lastMessage.message.substring(0, 24)
                   : null
               }}
-              <span v-if="value.lastMessage !== ''" class="text-red-400"
-                >...</span
-              ></span
+              <span class="text-red-400">...</span></span
             >
           </div>
           <div class="flex flex-row ml-1">
             <span class="text-xs font-medium text-gray-500">
               {{
                 this.$store.getters.user.data.uid == value.createdByUserId
-                  ? "Created at: " + format_date(value.createdAt)
+                  ? "Created: " + format_date(value.createdAt)
                   : ""
               }}</span
             >

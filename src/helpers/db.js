@@ -4,6 +4,8 @@ import { removeUrlParameter } from "../util/urlProcessing";
 
 const ROOM_MESSAGES_COLLECTIONS = "room-messages";
 const ROOM_METADATA_COLLECTIONS = "room-metadata";
+const ROOM_USERS_COLLECTIONS = "room-users";
+const USER_METADATA_COLLECTIONS = "user-metadata";
 
 /**
  * Read List of messages
@@ -98,7 +100,13 @@ export function getRoomMetadataByKeys(roomId) {
     .get();
 }
 
-export function deleteRoom(roomId) {
+/**
+ * Delete Room
+ * @param {string} roomId
+ * @param {string} userId
+ * @returns
+ */
+export function deleteRoom(roomId, userId) {
   db()
     .ref(ROOM_METADATA_COLLECTIONS + `/${roomId}`)
     .remove();
@@ -106,5 +114,21 @@ export function deleteRoom(roomId) {
   db()
     .ref(ROOM_MESSAGES_COLLECTIONS + `/${roomId}`)
     .remove();
+
+  db()
+    .ref(ROOM_USERS_COLLECTIONS + `/${roomId}`)
+    .remove();
+
+  db()
+    .ref(USER_METADATA_COLLECTIONS + `/${userId}/rooms/${roomId}`)
+    .remove();
   return;
+}
+
+export function leaveRoom(roomId, userId) {
+  return db()
+    .ref(USER_METADATA_COLLECTIONS + `/${userId}/rooms/${roomId}`)
+    .set({
+      join: false,
+    });
 }
