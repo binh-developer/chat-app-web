@@ -88,13 +88,13 @@ export default {
     },
     async deleteRoom() {
       if (this.room.roomID !== null) {
-        await deleteRoom(this.room.roomID, this.user.data.uid);
+        await deleteRoom(this.room.roomID);
         this.clearRoom();
       }
     },
     async leaveRoom() {
       if (this.room.roomID !== null) {
-        await leaveRoom(this.room.roomID, this.user.data.uid);
+        await leaveRoom(this.room.roomID);
         this.clearRoom();
       }
     },

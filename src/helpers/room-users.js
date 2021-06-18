@@ -1,8 +1,8 @@
 import store from "../store";
 import { auth, db } from "../services/firebase";
+import { COLLECTIONS } from "../constant";
 
-const ROOM_USERS_COLLECTIONS = "room-users";
-const USER_METADATA_COLLECTIONS = "user-metadata";
+const { ROOM_USERS_COLLECTIONS, USER_METADATA_COLLECTIONS } = COLLECTIONS;
 
 export async function addUserToRoom() {
   if (store.getters.room === null) return;

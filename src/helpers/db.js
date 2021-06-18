@@ -1,11 +1,15 @@
 import store from "../store";
-import { db } from "../services/firebase";
+import { db, auth } from "../services/firebase";
 import { removeUrlParameter } from "../util/urlProcessing";
 
-const ROOM_MESSAGES_COLLECTIONS = "room-messages";
-const ROOM_METADATA_COLLECTIONS = "room-metadata";
-const ROOM_USERS_COLLECTIONS = "room-users";
-const USER_METADATA_COLLECTIONS = "user-metadata";
+import { COLLECTIONS } from "../constant";
+
+const {
+  ROOM_MESSAGES_COLLECTIONS,
+  ROOM_METADATA_COLLECTIONS,
+  ROOM_USERS_COLLECTIONS,
+  USER_METADATA_COLLECTIONS,
+} = COLLECTIONS;
 
 /**
  * Read List of messages
@@ -106,29 +110,36 @@ export function getRoomMetadataByKeys(roomId) {
  * @param {string} userId
  * @returns
  */
-export function deleteRoom(roomId, userId) {
-  db()
-    .ref(ROOM_METADATA_COLLECTIONS + `/${roomId}`)
-    .remove();
+export function deleteRoom(roomId) {
+  const userId = auth()?.currentUser?.uid;
+  if (userId) {
+    db()
+      .ref(ROOM_METADATA_COLLECTIONS + `/${roomId}`)
+      .remove();
 
-  db()
-    .ref(ROOM_MESSAGES_COLLECTIONS + `/${roomId}`)
-    .remove();
+    db()
+      .ref(ROOM_MESSAGES_COLLECTIONS + `/${roomId}`)
+      .remove();
 
-  db()
-    .ref(ROOM_USERS_COLLECTIONS + `/${roomId}`)
-    .remove();
+    db()
+      .ref(ROOM_USERS_COLLECTIONS + `/${roomId}`)
+      .remove();
 
-  db()
-    .ref(USER_METADATA_COLLECTIONS + `/${userId}/rooms/${roomId}`)
-    .remove();
+    db()
+      .ref(USER_METADATA_COLLECTIONS + `/${userId}/rooms/${roomId}`)
+      .remove();
+  }
   return;
 }
 
-export function leaveRoom(roomId, userId) {
-  return db()
-    .ref(USER_METADATA_COLLECTIONS + `/${userId}/rooms/${roomId}`)
-    .set({
-      join: false,
-    });
+export function leaveRoom(roomId) {
+  const userId = auth()?.currentUser?.uid;
+  if (userId) {
+    return db()
+      .ref(USER_METADATA_COLLECTIONS + `/${userId}/rooms/${roomId}`)
+      .set({
+        join: false,
+      });
+  }
+  return;
 }

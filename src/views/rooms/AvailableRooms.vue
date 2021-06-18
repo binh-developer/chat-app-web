@@ -148,7 +148,6 @@ export default {
       let uid = this.$store.getters.user.data.uid;
       await getRoomMetadata().on("value", (snapshot) => {
         this.listRoom = snapshot.val();
-        console.log(this.listRoom);
       });
 
       // Compare List Room if user readed message in this room
