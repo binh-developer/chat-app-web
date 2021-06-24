@@ -92,7 +92,7 @@ export default {
       if (this.toSend.messageText === "" && this.imageData !== null) {
         let filename = this.imageData.name.replaceAll(/\s/g, "") + Date.now();
         const storageRef = storageOnComplete(
-          `${this.user.data.uid}/${filename}`,
+          `chat-rooms/${this.room.roomID}/${filename}`,
           this.imageData
         );
 
